@@ -229,6 +229,7 @@ Switch(config)#no vlan 35
 ```
 
 **Fuente**
+
 https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/12-2_55_se/configuration/guide/scg_2960/swvlan.html
 
 # Listas de control de acceso
@@ -273,7 +274,36 @@ Switch(config)#no ip access-list extended BLACK_LIST
 ```
 
 **Fuente**
+
 https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/12-2_55_se/configuration/guide/scg_2960/swacl.html
+
+# Tablas de direccionamiento MAC
+
+Esta tabla relaciona la dirección física de un equipo (MAC) con la dirección lógica (IP) y con el puerto por el cuan tienen acceso.
+
+## Tiempo de actualización
+
+Esta relación puede causar un problema en redes muy grandes debido a la cantidad de cambios. Ya que al apagar o prender un equipo este debe perder la asignación de IP al interior de un switch. Para mitigar este problema podemos ajustar manualmente el tiempo en que se dará de baja una dirección dentro del switch.
+
+```shell
+Switch(config)#mac address-table aging-time 120 vlan 10
+```
+
+## Definir rutas estáticas
+
+Esta puede resultar una excelente técnica de mitigación contra la usurpación de la puerta de acceso al interior de una red de trabajo.
+
+```shell
+Switch#mac address-table static 50e5.4939.a241 vlan 10 interface GigabitEthernet 0/2
+Switch#mac address-table static 50e5.4939.a241 vlan 20 interface GigabitEthernet 0/2
+Switch#mac address-table static 50e5.4939.a241 vlan 30 interface GigabitEthernet 0/2
+```
+
+## Eliminar rutas estáticas
+
+```shell
+Switch#no mac address-table static 50e5.4939.a241 vlan 10 interface GigabitEthernet 0/2
+```
 
 
 
