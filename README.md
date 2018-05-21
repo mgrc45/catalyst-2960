@@ -69,7 +69,7 @@ Las direcciones de la puerta de enlace y resolución de nombres pueden cambiar d
 ```shell
 Switch#configure terminal
 Switch(config)#ip default-gateway 192.168.30.14
-Switch(config)#ip name-server 148.204.103.2 148.204.198.2 148.201.235.2
+Switch(config)#ip name-server 9.9.9.9 8.8.8.8 8.8.4.4
 ```
 
 ## Configuración inicial de seguridad
