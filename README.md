@@ -493,7 +493,7 @@ https://www.cisco.com/c/es_mx/support/docs/lan-switching/spanning-tree-protocol/
 
 ## Restaurar interface por violación de puerto
 
-Para mostrar las direcciones aprendidas de los puertos
+### Para mostrar las direcciones aprendidas de los puertos
 
 ```shell
 Switch#show port address
@@ -528,7 +528,7 @@ Max Addresses limit in System (excluding one mac per port) : 8192
 
 Desbloquear el puerto en caso de violación por direcciones aprendidas
 
-Para mostrar las direcciones aprendidas de los puertos
+### Para mostrar las direcciones aprendidas de los puertos
 
 ```shell
 Switch#show port-security
