@@ -305,6 +305,57 @@ Switch#mac address-table static 50e5.4939.a241 vlan 30 interface GigabitEthernet
 Switch#no mac address-table static 50e5.4939.a241 vlan 10 interface GigabitEthernet 0/2
 ```
 
+## Mostrar tabla de direcciones MAC
+
+```shell
+Switch#show mac address-table
+```
+
+```shell
+          Mac Address Table
+-------------------------------------------
+
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+ All    0100.0ccc.cccc    STATIC      CPU
+ All    0100.0ccc.cccd    STATIC      CPU
+ All    0180.c200.0000    STATIC      CPU
+ All    0180.c200.0001    STATIC      CPU
+ All    0180.c200.0002    STATIC      CPU
+ All    0180.c200.0003    STATIC      CPU
+ All    0180.c200.0004    STATIC      CPU
+  10    0004.2329.0dfa    DYNAMIC     Gi0/1
+  10    0008.9bd2.08ef    DYNAMIC     Gi0/1
+  10    000a.f788.1a2e    DYNAMIC     Gi0/1
+  10    000c.29e9.479f    DYNAMIC     Gi0/1
+  10    0011.3266.e7ff    DYNAMIC     Gi0/1
+  10    0013.2028.3de4    DYNAMIC     Gi0/1
+  10    0015.17b4.80c0    DYNAMIC     Gi0/1
+  10    0015.17b4.80c1    DYNAMIC     Gi0/1
+  10    0019.d102.761a    DYNAMIC     Gi0/1
+  30    1c1b.0d06.b3aa    STATIC      Fa0/1
+  30    50e5.4939.a141    STATIC      Gi0/2
+  30    b4b5.2fb6.93eb    STATIC      Fa0/5
+  30    b888.e3d6.0ebb    STATIC      Fa0/1
+  30    e839.353e.82d5    STATIC      Fa0/11
+Total Mac Addresses for this criterion: 14
+```
+
+```shell
+Switch#show mac address-table vlan 20
+```
+
+```shell
+Switch#show mac address-table interface Gi0/1
+```
+
+```shell
+Switch#show mac address-table address fcaa.149a.fd50
+```
+
+**Fuente**
+
+https://www.cisco.com/c/m/en_us/techdoc/dc/reference/cli/nxos/commands/l2/mac-address-table-static.html 
 
 
 
