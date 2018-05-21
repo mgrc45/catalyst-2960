@@ -228,6 +228,52 @@ Borrar VLANs
 Switch(config)#no vlan 35
 ```
 
+**Fuente**
+https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/12-2_55_se/configuration/guide/scg_2960/swvlan.html
+
+# Listas de control de acceso
+Las listas de control de acceso están diseñadas para evitar el acceso desde direcciones de red específicas por una o varias interfaces.
+
+## Creación de lista de control de acceso
+
+A continuación, crearemos una lista de control de acceso que impida el acceso desde direcciones de red privadas por una interface Gigabit Ethernet.
+
+```shell
+Switch(config)#ip access-list extended BLACK_LIST
+Switch(config-ext-nacl)#deny ip 127.0.0.0 0.255.255.255 any
+Switch(config-ext-nacl)#deny ip 192.168.0.0 0.0.255.255 any
+Switch(config-ext-nacl)#deny ip host 0.0.0.0 any
+Switch(config-ext-nacl)#permit ip any any
+Switch(config-ext-nacl)#end
+Switch#configure terminal
+Switch(config)#interface GigabitEthernet 0/1
+Switch(config-if)#ip access-group BLACK_LIST in
+Switch(config-if)#end
+```
+
+## Mostrar listas de control de acceso
+
+```shell
+Switch#show access-list
+```
+
+```shell
+Extended IP access list BLACK_LIST
+    10 deny ip 127.0.0.0 0.255.255.255 any
+    20 deny ip 192.168.0.0 0.0.255.255 any
+    30 deny ip host 0.0.0.0 any
+    40 permit ip any any (4796371 matches)
+Switch#
+```
+
+## Eliminar listas de control de acceso
+
+```shell
+Switch(config)#no ip access-list extended BLACK_LIST
+```
+
+**Fuente**
+https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/12-2_55_se/configuration/guide/scg_2960/swacl.html
 
 
 
