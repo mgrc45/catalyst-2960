@@ -357,5 +357,82 @@ Switch#show mac address-table address fcaa.149a.fd50
 
 https://www.cisco.com/c/m/en_us/techdoc/dc/reference/cli/nxos/commands/l2/mac-address-table-static.html 
 
+# Configuración de puertos
+
+## Puertos de acceso
+
+Los puertos de acceso son puertos físicos que solo habitan en una VLAN y su finalidad es la conexión a equipos terminales. Como son equipos de trabajo, puntos de acceso, teléfonos VoIP, video cámaras IP o algunas impresoras en red.
+
+```shell
+Switch(config)#interface FastEthernet 0/23
+```
+
+Una buena práctica para ahorrar trabajo al administrar configuraciones de puerto es aplicarla a un rango de interfaces.
+
+```shell
+Switch(config)#interface range FastEthernet 0/1 - 22
+```
+
+Definir explícitamente el uso que se le dará al puerto puede ayudar a evitar problemas de seguridad.
+
+```shell
+Switch(config-if-range)#switchport mode access
+```
+
+Establecemos la VLAN en la que habitaran los puertos de acceso
+
+```shell
+Switch(config-if-range)#switchport access vlan 30
+```
+
+Definimos las políticas de seguridad en el puerto
+* Máximo 2 direcciones físicas podrán existir en este puerto
+* La interface al superar el número de direcciones fisicas: Dejara de contestar paquetes y quedara en estado err-disabled
+* Al no tener direcciones físicas aprenderá las que sean conectadas.
+* Elimina las direcciones aprendidas por la interface después de 60 minutos de inactividad.
+
+```shell
+Switch(config-if-range)#switchport port-security
+Switch(config-if-range)#switchport port-security maximum 2
+Switch(config-if-range)#switchport port-security violation protect
+Switch(config-if-range)#switchport port-security mac-address sticky
+
+Switch(config-if-range)#switchport port-security aging time 60
+Switch(config-if-range)#switchport port-security aging type inactivity
+```
+
+**Nota:** Estas políticas son definidas en términos generales para evitar que equipos de terceros al conectarse a un puerto puedan tener acceso a una VLAN. Sin embargo, se pueden cambiar la configuración para volverse más restrictivas de acuerdo al uso para el que este destinado el switch.
+
+Definimos la etiqueta de uso correspondiente para este dispositivo, este elemento no es funcional sin embargo es útil para la interface web el conocer el uso del puerto.
+
+```shell
+Switch(config-if-range)#macro description cisco-desktop
+```
+
+Habilitar el protocolo spanning-tree para evitar conectar cables entre las interfaces del mismo dispositivo o entre dispositivos de una misma VLAN lo que provocaría Loops infinitos y un alto consumo de recursos.
+
+```shell
+Switch(config-if-range)#spanning-tree portfast
+Switch(config-if-range)#spanning-tree bpduguard enable
+```
+
+
+## Puertos de acceso
+
+Los puertos troncales a diferencia de los de acceso tienen la peculiaridad de permitir mas de una red virtual por la misma interface. Regularmente son utilizados para transmitir comunicaciones entre dispositivos de comunicación y de distribución.
+
+La siguiente configuración define un puerto troncal ubicado en la interface GigabitEthernet 2 del presente modulo. Permitiendo todas las redes virtuales “vlan all” y usando la descripción de un Router. 
+
+```shell
+Switch(config)#interface GigabitEthernet 0/2
+Switch(config-if)#switchport mode trunk
+Switch(config-if)#switchport trunk allowed vlan all
+Switch(config-if)#macro description cisco-router
+Switch(config-if)#end
+```
+
+## Puertos dinámicos
+Es una tecnología propietaria de CISCO el cual automatiza la configuración de etiquetado de redes. Sin embargo, es una mala práctica debido a que permite ataques de doble etiquetado o “VLan Hopping”.
+
 
 
