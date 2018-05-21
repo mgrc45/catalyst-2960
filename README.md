@@ -23,6 +23,7 @@ Switch#configure terminal
 
 La diferencia se puede notar por el indicador de terminal
 
+| | |
 |---|---|
 | Switch> | Usuario sin privilegios de configuración |
 | Switch# | Usuario con privilegios de configuración |
@@ -43,7 +44,7 @@ La zona horaria CST -6 corresponde a la ciudad de México sin considerar el hora
 
 ```shell
 Switch#configure terminal
-Switch(config)#clock timezone <strong>CST -6</strong>
+Switch(config)#clock timezone **CST -6**
 Switch(config)#clock summer-time CDT recurring 1 Sunday April 1:00 last Sunday October 1:00
 ```
 
@@ -53,9 +54,47 @@ Para poder habilitar esta opción el dispositivo switch debe contar con acceso a
 
 ```shell
 Switch#configure terminal
-Switch(config)#ntp server <strong>time-a.nist.gov</strong> version 2
-Switch(config)#ntp server <strong>time-b.nist.gov</strong> version 2
-Switch(config)#ntp server <strong>time-c.nist.gov</strong> version 2
+Switch(config)#ntp server time-a.nist.gov version 2
+Switch(config)#ntp server time-b.nist.gov version 2
+Switch(config)#ntp server time-c.nist.gov version 2
+```
+
+## Configuración de puerta de acceso
+
+Las direcciones de la puerta de enlace y resolución de nombres pueden cambiar dependiendo de la configuración de su red.
+
+```shell
+Switch#configure terminal
+Switch(config)#ip default-gateway 192.168.30.14
+Switch(config)#ip name-server 148.204.103.2 148.204.198.2 148.201.235.2
+```
+
+## Configuración inicial de seguridad
+
+Los valores resaltados en negritas pueden ser variados de acuerdo a las políticas de la organización y la contraseña mostrada en el siguiente ejemplo es solo una muestra.
+En resumen, habilita la conexión por el protocolo **ssh**, deshabilitando el protocolo telnet en todas las líneas vty y se asigna una dirección IP (**192.168.30.13**) al interior de la **vlan 30** y deshabilita el acceso por la **vlan 1**.
+
+Genera un certificado de seguridad RSA de 2048 bits, el más seguro de este dispositivo. Y guarda la configuración de manera permanente en la configuración de inicio. Por lo que puede ser reiniciado sin perder la configuración.
+
+```shell
+Switch#configure terminal
+Switch(config)#ip ssh version 2
+Switch(config)#ip ssh authentication-retries 2
+Switch(config)#ip domain name state.gov.ca
+Switch(config)#crypto key generate rsa
+The name for the keys will be: Switch.cic.ipn.mx
+Choose the size of the key modulus in the range of 360 to 2048 for your
+General Purpose Keys. Choosing a key modulus greater than 512 may take
+a few minutes.
+
+How many bits in the modulus [512]: 2048
+% Generating 2048 bit RSA keys, keys will be non-exportable...[OK]
+
+Switch(config)#interface vlan 30
+Switch(config-if)#ip address 192.168.30.13 255.255.255.240
+Switch(config-if)#username admin priv 15 secret P@ssw0rd1
+Switch(config)#aaa new-model
+Switch(config)#enable secret P@ssw0rd2
 ```
 
 
