@@ -434,5 +434,143 @@ Switch(config-if)#end
 ## Puertos dinámicos
 Es una tecnología propietaria de CISCO el cual automatiza la configuración de etiquetado de redes. Sin embargo, es una mala práctica debido a que permite ataques de doble etiquetado o “VLan Hopping”.
 
+# Recuperación de errores
 
+Cuando se produce una violación de puerto por alguna de las políticas de seguridad en puerto implementadas.
+
+## Mostrar estado de la interface
+
+```shell
+Switch#show interface FastEthernet 0/13 status
+```
+
+Interface FastEthernet 13 se encuentra deshabilitado
+
+```shell
+Port      Name               Status        Vlan       Duplex  Speed Type
+Fa0/13                       err-disabled  20           full    100 10/100BaseTX
+Switch#
+```
+
+Para mostrar errores específicos de una interface
+
+```shell
+Switch#show port-security interface FastEthernet 0/13
+```
+
+Interface FastEthernet 13 sin errores
+
+```shell
+Port Security              : Enabled
+Port Status                : Secure-down
+Violation Mode             : Protect
+Aging Time                 : 120 mins
+Aging Type                 : Inactivity
+SecureStatic Address Aging : Disabled
+Maximum MAC Addresses      : 1
+Total MAC Addresses        : 1
+Configured MAC Addresses   : 0
+Sticky MAC Addresses       : 1
+Last Source Address:Vlan   : 1c1b.0d06.b49f:10
+Security Violation Count   : 0
+```
+
+## Restaurar interface
+
+Para recuperar el puerto basta con apagar y prender el puerto.
+
+```shell
+Switch#configure terminal
+Switch(config)#interface FastEthernet 0/13
+Switch(config-if)#shutdown
+Switch(config-if)#no shutdown
+Switch(config-if)#end
+```
+
+**Fuente**
+
+https://www.cisco.com/c/es_mx/support/docs/lan-switching/spanning-tree-protocol/69980-errdisable-recovery.html
+
+## Restaurar interface por violación de puerto
+
+Para mostrar las direcciones aprendidas de los puertos
+
+```shell
+Switch#show port address
+```
+
+```shell
+               Secure Mac Address Table
+-----------------------------------------------------------------------------
+Vlan    Mac Address       Type                          Ports   Remaining Age
+                                                                   (mins)
+----    -----------       ----                          -----   -------------
+  30    1c1b.0d06.b4ba    SecureSticky                  Fa0/1        -
+  30    b888.e3d6.1eab    SecureSticky                  Fa0/1        -
+  30    0025.ab42.9132    SecureSticky                  Fa0/2        -
+  30    0800.27bc.94c0    SecureSticky                  Fa0/2        -
+  30    1c1b.0d06.244e    SecureSticky                  Fa0/3        -
+  30    1c39.47b3.7a2e    SecureSticky                  Fa0/3        -
+  30    b4b5.2fb6.94ea    SecureSticky                  Fa0/5        -
+  30    1c1b.0d05.27f5    SecureSticky                  Fa0/7        -
+  30    2880.23e8.8a1c    SecureSticky                  Fa0/7        -
+  30    0800.27e8.078b    SecureSticky                  Fa0/9        -
+  30    1c1b.0d05.2963    SecureSticky                  Fa0/9        -
+  30    28d2.447c.630c    SecureSticky                  Fa0/10       -
+  30    e839.353e.84c5    SecureSticky                  Fa0/11       -
+  20    1c1b.0d06.244e    SecureSticky                  Fa0/15       -
+  20    50e5.4939.a8c8    SecureSticky                  Fa0/17       -
+  20    1c1b.0d05.2806    SecureSticky                  Fa0/19       -
+-----------------------------------------------------------------------------
+Total Addresses in System (excluding one mac per port)     : 5
+Max Addresses limit in System (excluding one mac per port) : 8192
+```
+
+Desbloquear el puerto en caso de violación por direcciones aprendidas
+
+Para mostrar las direcciones aprendidas de los puertos
+
+```shell
+Switch#show port-security
+```
+
+```shell
+Secure Port  MaxSecureAddr  CurrentAddr  SecurityViolation  Security Action
+                (Count)       (Count)          (Count)
+---------------------------------------------------------------------------
+      Fa0/1              2            2                  0          Protect
+      Fa0/2              2            2                  0          Protect
+      Fa0/3              2            2                  0          Protect
+      Fa0/4              2            0                  0          Protect
+      Fa0/5              2            1                  0          Protect
+      Fa0/6              2            0                  0          Protect
+      Fa0/7              2            2                  0          Protect
+      Fa0/8              2            0                  0          Protect
+      Fa0/9              2            2                  0          Protect
+     Fa0/10              2            1                  0          Protect
+     Fa0/11              2            1                  0          Protect
+     Fa0/12              2            0                  0          Protect
+     Fa0/13              1            0                  0          Protect
+     Fa0/14              1            0                  0          Protect
+     Fa0/15              1            1                  0          Protect
+     Fa0/16              1            0                  0          Protect
+     Fa0/17              1            1                  0          Protect
+     Fa0/18              1            0                  0          Protect
+     Fa0/19              1            1                  0          Protect
+     Fa0/20              1            0                  0          Protect
+     Fa0/21              1            0                  0          Protect
+     Fa0/22              1            0                  0          Protect
+---------------------------------------------------------------------------
+Total Addresses in System (excluding one mac per port)     : 5
+Max Addresses limit in System (excluding one mac per port) : 8192
+Switch#
+```
+
+```shell
+Switch#clear port-security sticky interface FastEthernet 0/13
+```
+
+**Fuente**
+
+https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst4500/12-2/20ewa/configuration/guide/conf/port_sec.html
 
