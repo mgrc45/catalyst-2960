@@ -2,7 +2,9 @@
 
 Para poder acceder a la terminal puede ingresar por medio del protocolo “SSH” o “Telnet” por medio de una dirección IP o en su defecto por la interface de consola que se ubica en la parte trasera del dispositivo usando un adaptador serial.
 
-![Cisco Catalyst 2960](add/cisco-2960.png)
+<p align="center">
+ <img src="add/cisco-2960.png" alt="Cisco Catalyst 2960">
+</p>
 <p align="right">( 2 ) RJ45 Console port</p>
 
 ## Teclas de acceso rápido
