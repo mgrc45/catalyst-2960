@@ -20,12 +20,42 @@ Para poder efectuar configuraciones tendrá que iniciar como usuario privilegiad
 Switch>enable
 Switch#configure terminal
 ```
+
 La diferencia se puede notar por el indicador de terminal
 
-| --- | --- |
+|---|---|
 | Switch> | Usuario sin privilegios de configuración |
 | Switch# | Usuario con privilegios de configuración |
 
-#Configuración del reloj
+# Configuración del reloj
+
+Existen varias alternativas para ajustar el reloj interno del dispositivo a continuación, las mencionaremos.
+
+## Configuración manual
+
+```shell
+Switch#clock set 12:49:00 03 May 2017
+```
+
+## Configuración de la zona horaria
+
+La zona horaria CST -6 corresponde a la ciudad de México sin considerar el horario de verano. El cual reduce una hora en el periodo comprendido entre el primer domingo de abril y el último domingo de octubre.
+
+```shell
+Switch#configure terminal
+Switch(config)#clock timezone <strong>CST -6</strong>
+Switch(config)#clock summer-time CDT recurring 1 Sunday April 1:00 last Sunday October 1:00
+```
+
+## Configuración de servidor de tiempo
+
+Para poder habilitar esta opción el dispositivo switch debe contar con acceso a internet para lo cual véase el apartado “Configuración de puerta de acceso”
+
+```shell
+Switch#configure terminal
+Switch(config)#ntp server <strong>time-a.nist.gov</strong> version 2
+Switch(config)#ntp server <strong>time-b.nist.gov</strong> version 2
+Switch(config)#ntp server <strong>time-c.nist.gov</strong> version 2
+```
 
 
