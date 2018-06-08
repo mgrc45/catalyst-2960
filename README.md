@@ -138,7 +138,7 @@ Switch(config)#vlan 30
 Switch(config-vlan)#name "Estaciones de trabajo"
 Switch(config-vlan)#end
 ```
-> A partir de la serie 3600 para la configuración de vlans se usa la instrucción **vlan database**
+> A partir de la serie 3600 para la configuración de VLANs se usa la instrucción **vlan database**
 
 ## Mostrar VLANs
 
