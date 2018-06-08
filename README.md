@@ -420,7 +420,7 @@ Switch(config-if-range)#spanning-tree bpduguard enable
 ```
 
 
-## Puertos de acceso
+## Puertos troncales
 
 Los puertos troncales a diferencia de los de acceso tienen la peculiaridad de permitir mas de una red virtual por la misma interface. Regularmente son utilizados para transmitir comunicaciones entre dispositivos de comunicación y de distribución.
 
